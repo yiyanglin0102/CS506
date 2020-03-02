@@ -1,16 +1,40 @@
   
 <template>
   <div class="home">
-    <HelloWorld msg="Welcome to Your Vue.js App" />
-    <button @click="logout">Logout</button><br>
-    <button v-on:click="storeData">STORE</button> <br>
-    <button v-on:click="print">print STORE</button><br>
+    <h3>Welcome to My Person Profile</h3>
 
+    <!-- <br />
+    <button v-on:click="storeData">STORE</button>
+    <br />
+    <button v-on:click="print">print</button>
+    <br />-->
+    <h4>About Me</h4>
 
-    <input type="name" v-model="name" placeholder="Name" />
+    <span>First Name: {{ this.firstName }}</span>
     <br />
-<button @click="save">save</button>
+    <span>Last Name: {{ this.lastName }}</span>
     <br />
+    <span>User email: {{ this.email }}</span>
+    <br />
+    <span>My Classes: {{ this.myClasses }}</span>
+    <br />
+    <span>My Future Goals: {{ this.futureGoals }}</span>
+    <br />
+    <span>My Interesting Links: {{ this.interestingLinks }}</span>
+    <br />
+    <span>I Want to Say: {{ this.wantSay }}</span>
+    <br />
+    <br />
+    <br />
+    <!-- <input type="name" v-model="name" placeholder="Name" />
+    <br />-->
+    <button @click="save" class="btn btn-info">save</button>
+    <br />
+    <br />
+    <br />
+    <router-link to="/hi">Back to Bulletin Board</router-link>
+    <br />
+    <button @click="logout" class="btn btn-info">Logout</button>
   </div>
 </template>
 
@@ -22,7 +46,14 @@ export default {
   name: "home",
   data() {
     return {
-      name: ""
+      email: "",
+      // password: "",
+      firstName: "",
+      lastName: "",
+      wantSay: "",
+      myClasses: "",
+      futureGoals: "",
+      interestingLinks: ""
     };
   },
   methods: {
@@ -31,7 +62,8 @@ export default {
         .firestore()
         .collection("users")
         .add({
-          name: this.name
+          name: this.name,
+          email: this.email
         })
         .then(function(docRef) {
           console.log("Document written with ID: ", docRef.id);
@@ -45,8 +77,7 @@ export default {
         .firestore()
         .collection("users")
         .add({
-          first: "Ada",
-          last: "Lovelace",
+          name: "Lovelace",
           born: 1815
         })
         .then(function(docRef) {
@@ -57,13 +88,26 @@ export default {
         });
     },
     print: function() {
+      var vm = this;
+      const currentUser = firebase.auth().currentUser;
+      // `${doc.id} => ${doc.data().email}`
       firebase
         .firestore()
         .collection("users")
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            console.log(`${doc.id} => ${doc.data()}`);
+            if (doc.data().email == currentUser.email) {
+              // console.log(doc.data().name);
+              vm.firstName = doc.data().firstName;
+              vm.lastName = doc.data().lastName;
+              vm.email = doc.data().email;
+              vm.wantSay = doc.data().wantSay;
+              vm.myClasses = doc.data().myClasses;
+              vm.futureGoals = doc.data().futureGoals;
+              vm.interestingLinks = doc.data().interestingLinks;
+            }
+            console.log(`${doc.id} => ${doc.data().email}`);
           });
         });
     },
@@ -74,7 +118,29 @@ export default {
         .then(() => {
           this.$router.replace("login");
         });
+    },
+    getdata: function() {
+      var docRef = firebase
+        .firestore()
+        .collection("users")
+        .doc("gqPLrzAvZjwJYjFIMCzv");
+      docRef
+        .get()
+        .then(function(doc) {
+          if (doc.exists) {
+            return doc.data().email;
+            // console.log(doc.data().email); //////////////////////////////////////////
+          } else {
+            console.log("找不到文件");
+          }
+        })
+        .catch(function(error) {
+          console.log("提取文件時出錯:", error);
+        });
     }
+  },
+  created() {
+    this.print();
   }
 };
 </script>
@@ -90,4 +156,3 @@ button {
   /* border: solid #5B6DCD 10px;  */
 }
 </style>
-

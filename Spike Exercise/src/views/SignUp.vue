@@ -1,18 +1,59 @@
 <template>
-  <div class="sign-up">
-    <p>Let's create your account!</p>
-    <input type="text" v-model="email" placeholder="Email" />
-    <br />
-    <input type="password" v-model="password" placeholder="Password" />
-    <br />
-    <input type="name" v-model="name" placeholder="First Name, Last Name" />
-    <br />
-    <button @click="signUp">Sign up</button>
-    <br />
-    <span>
-      Or go back to
-      <router-link to="/login">login</router-link>
-    </span>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4"></div>
+      <div class="col-sm-6">
+        <div class="sign-up">
+          <p class="spinner-grow" role="status"></p>
+          <p>Let's create your account!</p>
+
+          <input type="text" class="form-control" v-model="email" placeholder="Email" />
+          <br />
+          <input type="password" class="form-control" v-model="password" placeholder="Password" />
+          <br />
+          <input type="firstName" class="form-control" v-model="firstName" placeholder="First Name" />
+          <br />
+          <input type="lastName" class="form-control" v-model="lastName" placeholder="Last Name" />
+          <br />
+
+          <input type="myClasses" class="form-control" v-model="myClasses" placeholder="My Classes" />
+          <br />
+
+          <input
+            type="futureGoals"
+            class="form-control"
+            v-model="futureGoals"
+            placeholder="Future Goals"
+          />
+          <br />
+          <input
+            type="interestingLinks"
+            class="form-control"
+            v-model="interestingLinks"
+            placeholder="My Interesting Links"
+          />
+          <br />
+
+          <input
+            type="wantSay"
+            class="form-control"
+            v-model="wantSay"
+            placeholder="Something Want to Say"
+          />
+          <br />
+          <button @click="signUp" class="btn btn-primary">Sign up</button>
+          <br />
+          <h4>
+            <span class="btn btn-light">
+              Or go back to
+              <router-link to="/login" class="badge badge-warning">login</router-link>
+            </span>
+          </h4>
+
+          <div class="col-sm-4"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -24,7 +65,12 @@ export default {
     return {
       email: "",
       password: "",
-      name: ""
+      firstName: "",
+      lastName: "",
+      wantSay: "",
+      myClasses: "",
+      futureGoals: "",
+      interestingLinks: ""
     };
   },
   methods: {
@@ -40,8 +86,13 @@ export default {
               .collection("users")
               .add({
                 email: this.email,
-                password: this.password,
-                name: this.name
+                // password: this.password,
+                firstName: this.firstName,
+                lastName: this.lastName,
+                wantSay: this.wantSay,
+                myClasses: this.myClasses,
+                futureGoals: this.futureGoals,
+                interestingLinks: this.interestingLinks
               })
               .then(function(docRef) {
                 console.log("Document written with ID: ", docRef.id);
@@ -66,12 +117,12 @@ export default {
 }
 input {
   margin: 10px 0;
-  width: 20%;
+  width: 100%;
   padding: 15px;
 }
 button {
   margin-top: 10px;
-  width: 10%;
+  width: 100%;
   cursor: pointer;
 }
 span {

@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import firebase from 'firebase'
+import "bootstrap"
+
 
 Vue.config.productionTip = false
 
@@ -22,9 +24,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
-
-
-firebase.auth().onAuthStateChanged(() =>{
+firebase.auth().onAuthStateChanged(() => {
   if (!app) {
     app = new Vue({
       router,

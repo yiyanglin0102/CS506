@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import SignUp from '../views/SignUp.vue'
+import Bulletin from '../views/Bulletin.vue'
 import firebase from 'firebase';
 
 Vue.use(VueRouter)
@@ -11,11 +12,14 @@ const router = new VueRouter({
   routes: [
     {
       path: '*',
-      redirect: '/login'
+      redirect: '/bulletin'
     },
     {
-      path: '/',
-      redirect: '/login'
+      path: '/bulletin',
+      component: Bulletin,
+      meta: {
+        requiresAuth: false
+      }
     },
     {
       path: '/home',
